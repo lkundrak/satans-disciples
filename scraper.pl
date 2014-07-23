@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 use Database::DumpTruck;
-use HTML::TreeBuilder;
+use HTML::TreeBuilder 5 -weak;
 
 my $dt = new Database::DumpTruck ({ dbname => 'data.sqlite', table => 'swdata' });
 
