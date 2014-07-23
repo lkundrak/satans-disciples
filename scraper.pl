@@ -2,7 +2,8 @@ use strict;
 use warnings;
 
 use Database::DumpTruck;
-use HTML::TreeBuilder 5 -weak;
+use HTML::TreeBuilder 4;
+use LWP::Simple;
 
 my $dt = new Database::DumpTruck ({ dbname => 'data.sqlite', table => 'swdata' });
 
@@ -10,7 +11,7 @@ sub do_page
 {
 	my $id = shift;
 
-	my $tree = new_from_url HTML::TreeBuilder ("http://www.peticie.com/signatures/gothoom_2014_otvoreny_list_ministrovi_kultury_prezidentovi_pz/start/$id");
+	my $tree = new_from_content HTML::TreeBuilder (get ("http://www.peticie.com/signatures/gothoom_2014_otvoreny_list_ministrovi_kultury_prezidentovi_pz/start/$id"));
 	my $table = $tree->look_down (_tag => 'table', id => 'signatures');
 
 	my $last_id;
@@ -34,6 +35,7 @@ sub do_page
 		});
 	}
 
+	$tree->delete;
 	return $last_id;
 }
 
